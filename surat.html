@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Untuk Kamu 💌</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family: sans-serif; }
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+body {
+  background: #050814 url('curug.jpg') no-repeat center center;
+  background-size: cover;
+  position: relative;
+}
+
+/* === EFEK BINTANG JATUH / CAHAYA MELESAT === */
+.bintang-jatuh {
+  position: absolute;
+  width: 2px;
+  height: 80px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.9), transparent);
+  top: -100px;
+  animation: jatuh linear infinite;
+  transform: rotate(45deg);
+  border-radius: 50%;
+}
+@keyframes jatuh {
+  0% { transform: translateY(0) translateX(0) rotate(45deg); opacity: 1; }
+  100% { transform: translateY(120vh) translateX(200px) rotate(45deg); opacity: 0; }
+}
+
+/* === EFEK BUNGA & DAUN JATUH === */
+.benda-jatuh {
+  position: absolute;
+  top: -50px;
+  font-size: 24px;
+  animation: bungaJatuh linear infinite;
+  pointer-events: none;
+}
+@keyframes bungaJatuh {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+.page {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  z-index: 10;
+  padding: 20px;
+}
+.page.active { opacity: 1; pointer-events: auto; }
+
+/* HALAMAN 1 - SURAT */
+.surat {
+  font-size: 100px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  animation: gerak 2s infinite ease-in-out;
+  filter: drop-shadow(0 0 20px rgba(255,255,255,0.6));
+}
+@keyframes gerak {
+  0% {transform: translateY(0);}
+  50% {transform: translateY(-12px);}
+  100% {transform: translateY(0);}
+}
+.teks-buka {
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+  text-shadow: 0 2px 8px #000;
+}
+
+/* KOTAK PERTANYAAN UMUM */
+.kotak {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 35px 25px;
+  border-radius: 16px;
+  text-align: center;
+  width: 85%;
+  max-width: 340px;
+  box-shadow: 0 0 30px rgba(135, 206, 235, 0.3);
+  border: 1px solid rgba(135, 206, 235, 0.4);
+}
+.kotak h2 {
+  color: #fff;
+  margin-bottom: 25px;
+  font-size: 20px;
+  line-height: 1.5;
+}
+.kotak input {
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  border: 2px solid #87ceeb;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  text-align: center;
+  background: rgba(255,255,255,0.9);
+  outline: none;
+}
+
+/* PILIHAN GANDA */
+.pilihan {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.pilihan-btn {
+  padding: 12px 20px;
+  font-size: 17px;
+  border: 2px solid #87ceeb;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.4);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.pilihan-btn:hover {
+  background: rgba(135, 206, 235, 0.3);
+  box-shadow: 0 0 12px #87ceeb;
+}
+
+/* === TOMBOL - MENYALA BIRU + LATAR HITAM PUDAR === */
+.btn {
+  padding: 14px 35px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.6);
+  color: #b3e5fc;
+  border: 2px solid #87ceeb;
+  box-shadow: 0 0 15px #87ceeb, 0 0 30px rgba(135, 206, 235, 0.5), inset 0 0 10px rgba(135, 206, 235, 0.3);
+  transition: all 0.3s ease;
+}
+.btn:hover {
+  background: rgba(135, 206, 235, 0.2);
+  color: #fff;
+  box-shadow: 0 0 20px #87ceeb, 0 0 40px rgba(135, 206, 235, 0.7), inset 0 0 15px rgba(135, 206, 235, 0.5);
+  transform: scale(1.05);
+}
+
+/* HALAMAN 3 - SIAP / NGGAK */
+.teks-putih {
+  color: white;
+  text-align: center;
+  text-shadow: 0 2px 8px #000;
+}
+.teks-putih h2 {
+  font-size: 22px;
+  margin-bottom: 40px;
+  line-height: 1.5;
+}
+.tombol-bawah {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  align-items: center;
+  position: relative;
+  min-height: 200px;
+}
+#tombolTidak {
+  position: relative;
+  transition: all 0.2s ease;
+}
+.pesan {
+  margin-top: 30px;
+  font-size: 18px;
+  color: #ffeb3b;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.5s;
+  text-shadow: 0 0 10px rgba(235, 235, 59, 0.5);
+}
+.pesan.tampil { opacity: 1; }
+
+/* UMPAN BALIK JAWABAN */
+.benar {
+  color: #00ff88;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 15px 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.benar.tampil { opacity: 1; }
+.salah {
+  color: #ff4444;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 15px 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.salah.tampil { opacity: 1; }
+
+/* HITUNG MUNDUR */
+.hitung-mundur {
+  color: #fff;
+  font-size: 60px;
+  font-weight: bold;
+  text-shadow: 0 0 20px #87ceeb;
+}
+</style>
+</head>
+<body>
+
+<!-- HALAMAN 1 -->
+<div class="page active" id="hal1">
+  <div class="surat" onclick="bukaHal2()">💌</div>
+  <p class="teks-buka">Buka dong sebentar</p>
+</div>
+
+<!-- HALAMAN 2 - NAMA PENGGUNA -->
+<div class="page" id="hal2">
+  <div class="kotak">
+    <h2>Siapa namamu?</h2>
+    <input type="text" id="namaPengguna" placeholder="Ketik nama di sini...">
+    <button class="btn" onclick="bukaHal3()">Berikutnya →</button>
+  </div>
+</div>
+
+<!-- HALAMAN 3 - SIAP / NGGAK -->
+<div class="page teks-putih" id="hal3">
+  <h2 id="sapaan">Hai, kamu siap nggak nyelesaiin pertanyaan dariku?</h2>
+  <div class="tombol-bawah">
+    <button class="btn" onclick="bukaHal4()">Siap ✅</button>
+    <button class="btn" id="tombolTidak" onclick="geserTidak()">Nggak 😜</button>
+  </div>
+  <p class="pesan" id="pesan">Siap nggak siap harus siap loh ya...</p>
+</div>
+
+<!-- HALAMAN 4 - PERTANYAAN NAMA LENGKAP FAHRI9E -->
+<div class="page" id="hal4">
+  <div class="kotak">
+    <h2>Siapa nama lengkap Fahri9e?</h2>
+    <input type="text" id="jawaban1" placeholder="Ketik jawabanmu...">
+    <p class="benar" id="benar1">✅ Benar!</p>
+    <p class="salah" id="salah1">❌ Salah!</p>
+    <button class="btn" id="btnKirim1" onclick="cekJawaban1()">Kirim Jawaban</button>
+  </div>
+</div>
+
+<!-- HALAMAN 5 - HITUNG MUNDUR 1 -->
+<div class="page" id="hal5">
+  <div class="kotak">
+    <div class="hitung-mundur" id="angkaMundur1">3</div>
+  </div>
+</div>
+
+<!-- HALAMAN 6 - PERTANYAAN PRESIDEN -->
+<div class="page" id="hal6">
+  <div class="kotak">
+    <h2 id="tanyaPresiden">Oke, sekarang siapa nama bapak presiden Indonesia?</h2>
+    <input type="text" id="jawaban2" placeholder="Ketik jawabanmu...">
+    <p class="benar" id="benar2">✅ Benar!</p>
+    <p class="salah" id="salah2">❌ Salah!</p>
+    <button class="btn" id="btnKirim2" onclick="cekJawaban2()">Kirim Jawaban</button>
+  </div>
+</div>
+
+<!-- HALAMAN 7 - HITUNG MUNDUR 2 -->
+<div class="page" id="hal7">
+  <div class="kotak">
+    <div class="hitung-mundur" id="angkaMundur2">3</div>
+  </div>
+</div>
+
+<!-- HALAMAN 8 - PERTANYAAN UMUR FAHRI -->
+<div class="page" id="hal8">
+  <div class="kotak">
+    <h2>Jika kau temannya Fahri, coba tebak Fahri umur berapa?</h2>
+    <div class="pilihan">
+      <button class="pilihan-btn" onclick="cekUmur('A')">A. 14</button>
+      <button class="pilihan-btn" onclick="cekUmur('B')">B. 15</button>
+      <button class="pilihan-btn" onclick="cekUmur('C')">C. 16</button>
+      <button class="pilihan-btn" onclick="cekUmur('D')">D. 25</button>
+    </div>
+    <p class="benar" id="benarUmur">✅ Benar!</p>
+    <p class="salah" id="salahUmur">❌ Salah!</p>
+  </div>
+</div>
+
+<!-- HALAMAN 9 - HITUNG MUNDUR 3 -->
+<div class="page" id="hal9">
+  <div class="kotak">
+    <div class="hitung-mundur" id="angkaMundur3">3</div>
+  </div>
+</div>
+
+<!-- HALAMAN 10 - PERTANYAAN AKHIR -->
+<div class="page" id="hal10">
+  <div class="kotak">
+    <h2>Mau pertanyaan yang lebih sulit??</h2>
+    <button class="btn" onclick="bukaWA()">Iya 💪</button>
+  </div>
+</div>
+
+<script>
+let klikTidak = 0;
+let namaPengguna = "";
+
+// === BUAT EFEK BINTANG JATUH ===
+function buatBintangJatuh() {
+  const bintang = document.createElement('div');
+  bintang.className = 'bintang-jatuh';
+  bintang.style.left = Math.random() * 100 + '%';
+  bintang.style.animationDuration = (Math.random() * 3 + 2) + 's';
+  bintang.style.animationDelay = Math.random() * 5 + 's';
+  document.body.appendChild(bintang);
+  setTimeout(() => bintang.remove(), 5000);
+}
+setInterval(buatBintangJatuh, 400);
+
+// === BUAT EFEK BUNGA & DAUN JATUH ===
+const benda = ['🌸', '🌺', '🌻', '🌷', '🍃', '🍂', '✨', '💫'];
+function buatBungaJatuh() {
+  const el = document.createElement('div');
+  el.className = 'benda-jatuh';
+  el.innerText = benda[Math.floor(Math.random() * benda.length)];
+  el.style.left = Math.random() * 100 + '%';
+  el.style.fontSize = (Math.random() * 16 + 16) + 'px';
+  el.style.animationDuration = (Math.random() * 5 + 4) + 's';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 9000);
+}
+setInterval(buatBungaJatuh, 600);
+
+// === FUNGSI PINDAH HALAMAN ===
+function bukaHal2() {
+  document.getElementById('hal1').classList.remove('active');
+  document.getElementById('hal2').classList.add('active');
+}
+
+function bukaHal3() {
+  namaPengguna = document.getElementById('namaPengguna').value.trim() || "Teman";
+  document.getElementById('sapaan').innerText = 
+    `Hai ${namaPengguna}, kamu siap nggak nyelesaiin pertanyaan dariku?`;
+  document.getElementById('hal2').classList.remove('active');
+  document.getElementById('hal3').classList.add('active');
+}
+
+function geserTidak() {
+  klikTidak++;
+  const btn = document.getElementById('tombolTidak');
+  const x = (Math.random()-0.5) * 220;
+  const y = (Math.random()-0.5) * 100;
+  btn.style.transform = `translate(${x}px, ${y}px)`;
+  
+  if (klikTidak >= 3) {
+    document.getElementById('pesan').classList.add('tampil');
+  }
+}
+
+function bukaHal4() {
+  document.getElementById('hal3').classList.remove('active');
+  document.getElementById('hal4').classList.add('active');
+}
+
+// === CEK JAWABAN 1: NAMA LENGKAP ===
+function cekJawaban1() {
+  const jawab = document.getElementById('jawaban1').value.trim().toLowerCase();
+  if (jawab === 'fahri zainul umam') {
+    document.getElementById('benar1').classList.add('tampil');
+    document.getElementById('btnKirim1').style.display = 'none';
+    setTimeout(() => mulaiHitungMundur('hal5', 'angkaMundur1', 'bukaHal6'), 3000);
+  } else {
+    document.getElementById('salah1').classList.add('tampil');
+    setTimeout(() => document.getElementById('salah1').classList.remove('tampil'), 3000);
+  }
+}
+
+// === CEK JAWABAN 2: PRESIDEN ===
+function cekJawaban2() {
+  const jawab = document.getElementById('jawaban2').value.trim().toLowerCase();
+  const benar = ['prabowo', 'prabowo subianto'];
+  if (benar.includes(jawab)) {
+    document.getElementById('benar2').classList.add('tampil');
+    document.getElementById('btnKirim2').style.display = 'none';
+    setTimeout(() => mulaiHitungMundur('hal7', 'angkaMundur2', 'bukaHal8'), 3000);
+  } else {
+    document.getElementById('salah2').classList.add('tampil');
+    setTimeout(() => document.getElementById('salah2').classList.remove('tampil'), 3000);
+  }
+}
+
+// === CEK JAWABAN 3: UMUR FAHRI ===
+function cekUmur(pilihan) {
+  if (pilihan === 'A') {
+    document.getElementById('benarUmur').classList.add('tampil');
+    setTimeout(() => mulaiHitungMundur('hal9', 'angkaMundur3', 'bukaHal10'), 3000);
+  } else {
+    document.getElementById('salahUmur').classList.add('tampil');
+    setTimeout(() => document.getElementById('salahUmur').classList.remove('tampil'), 3000);
+  }
+}
+
+// === FUNGSI HITUNG MUNDUR ===
+function mulaiHitungMundur(halAktif, idAngka, fungsiLanjut) {
+  const semuaHal = document.querySelectorAll('.page');
+  semuaHal.forEach(h => h.classList.remove('active'));
+  
+  document.getElementById(halAktif).classList.add('active');
+  
+  let hitung = 3;
+  const el = document.getElementById(idAngka);
+  el.innerText = hitung;
+  
+  const timer = setInterval(() => {
+    hitung--;
+    if (hitung > 0) {
+      el.innerText = hitung;
+    } else {
+      clearInterval(timer);
+      document.getElementById(halAktif).classList.remove('active');
+      if (fungsiLanjut === 'bukaHal6') bukaHal6();
+      else if (fungsiLanjut === 'bukaHal8') bukaHal8();
+      else if (fungsiLanjut === 'bukaHal10') bukaHal10();
+    }
+  }, 1000);
+}
+
+function bukaHal6() {
+  document.getElementById('hal5').classList.remove('active');
+  document.getElementById('hal6').classList.add('active');
+  document.getElementById('tanyaPresiden').innerText = 
+    `Oke ${namaPengguna}, sekarang, siapa nama bapak presiden Indonesia?`;
+}
+
+function bukaHal8() {
+  document.getElementById('hal7').classList.remove('active');
+  document.getElementById('hal8').classList.add('active');
+}
+
+function bukaHal10() {
+  document.getElementById('hal9').classList.remove('active');
+  document.getElementById('hal10').classList.add('active');
+}
+
+// === BUKA WHATSAPP + PESAN OTOMATIS ===
+function bukaWA() {
+  const pesan = encodeURIComponent("Fahri, berikan aku pertanyaan lagi");
+  window.location.href = "https://wa.me/6285859115193?text=" + pesan;
+}
+</script>
+
+</body>
+    </html>
+    
